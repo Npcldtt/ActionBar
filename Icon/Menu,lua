@@ -1,0 +1,100 @@
+local Players = game:GetService("Players")
+
+local menu = {}
+
+MenuID = 1
+ItemID = 0
+local lastYPosition = -0.114
+local TweenService = game:GetService("TweenService")
+
+function menu.new(player)
+	if not player then
+		error("Player cannot be nil")
+	end
+
+	local menuself = setmetatable({}, {__index = menu})
+	menuself.Items = {}
+	
+	local PlayerGui = player:WaitForChild("PlayerGui")
+	local UI = PlayerGui:FindFirstChild("ActionBarMenu")
+
+	if not UI then
+		local UI = Instance.new("ScreenGui")
+		UI.Name = "ActionBarMenu"
+		UI.Parent = PlayerGui
+		UI.IgnoreGuiInset = true
+		UI.ResetOnSpawn = false
+		local Menus = Instance.new("Frame")
+		Menus.Name = "Menus"
+		Menus.Position = script.Template.Menu.Position
+		Menus.Size = script.Template.Menu.Size
+		Menus.BackgroundTransparency = 1
+		Menus.Parent = UI
+	end
+	
+	local PlayerGui = player:WaitForChild("PlayerGui")
+	local UI = PlayerGui:WaitForChild("ActionBarMenu")
+	local Menus = UI.Menus
+
+	menuself.Widget = script.Template.Menu.Menu:Clone()
+	menuself.Widget.Parent = Menus
+	
+	local item = { ItemID = ItemID, MenuID = menuself.MenuID }
+
+	function menuself.newItem(name)
+		ItemID = ItemID + 1
+		lastYPosition = (lastYPosition or 0) + 0.119
+		local item = { ItemID = ItemID, MenuID = menuself.MenuID }  -- Initialize item
+
+		if not menuself.Widget.Items then
+			menuself.Widget.Items = Instance.new("Frame")
+			menuself.Widget.Items.Parent = menuself.Widget
+		end
+
+		item.Widget = menuself.Widget.Items.Item:Clone()  -- Clone widget after checking for Items
+		item.Widget.Text = name
+		item.Widget.Position = UDim2.new(-0.001, 0, lastYPosition, 5)  -- Adjust X and Y position
+		item.Widget.Visible = true
+
+		item.Widget.Parent = menuself.Widget.Items
+
+		function item.setImage(decalid)
+			item.Widget.Icon.Image = "rbxassetid://" .. decalid
+		end
+		
+		function item.setLabel(text)
+			item.Widget.Text = text
+		end
+		
+		function item.MouseButton1Click(func)
+			item.Widget.MouseButton1Click:Connect(func)
+		end
+
+		item.setImage = item.setImage
+		item.setLabel = item.setLabel
+		table.insert(menuself.Items, item)
+		return item
+	end
+	
+	function menuself.hide()
+		menuself.Widget.Visible = false
+	end
+	
+	function menuself.show()
+		menuself.Widget.Visible = true
+	end
+	
+	function menuself.xpos(pos)
+		local currentPos = menuself.Widget.Position
+		menuself.Widget.Position = pos
+	end
+
+	function menuself.ypos(pos)
+		local currentPos = menuself.Widget.Position
+		menuself.Widget.Position = pos
+	end
+
+	return menuself
+end
+
+return menu
