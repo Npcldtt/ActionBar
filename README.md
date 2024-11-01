@@ -1,4 +1,3 @@
-```markdown
 # ActionBar and ActionBarMenu for Roblox
 
 This repository contains a Lua script designed for Roblox that creates a customizable action bar and action menu for players in the game. The script utilizes TweenService for smooth animations and dynamic UI updates.
