@@ -18,10 +18,20 @@ This repository contains a Lua script designed for Roblox that creates a customi
 
 ### Installation
 
-1. Download the model
+1. Download the model.
 2. Open Roblox Studio.
 3. Create or open a game project.
 4. Insert a Downloaded model into `Workspace`.
+
+Or
+
+1. Go to this (link(https://create.roblox.com/store/asset/140501759706489/ActionBar)).
+2. Click **Get Model**.
+3. Open Roblox Studio.
+4. Create or open a game project.
+5. Open toolbox.
+6. Open invetory on toolbox.
+7. Insert a model.
 
 ### Usage
 
