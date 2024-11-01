@@ -120,7 +120,6 @@ Players.PlayerAdded:Connect(function(player)
 	
 	OpenMenu.MouseButton1Click(OpenTestMenu)
 	Reset.MouseButton1Click(resetCharacter)
-end)
-```
+    end)
 end)
 ```
