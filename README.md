@@ -38,8 +38,15 @@ Or
 1. **Action Bar Creation**: The `Icon` class allows you to create an action button for a player. Use the `Icon.new(player)` method to create a new button.
 
    ```lua
-   local player = game.Players.LocalPlayer
-   local actionButton = Icon.new(player)
+   local Icon = require(game.Workspace["ActionBar"].Icon)
+   local Menu = require(game.Workspace["ActionBar"].Icon.Menu)
+   local Players = game:GetService("Players")
+   
+   Icon.Attribute = true -- Enables attribute, You can disable it if you want.
+   
+   Players.PlayerAdded:Connect(function(player)
+      local actionButton = Icon.new(player)
+   end)
    ```
 
 2. **Setting Button Images**: Use `setImage(decalid, TYPE)` to set the images for the button and its selected state.
@@ -77,24 +84,43 @@ Or
 Here is an example of how to create an action bar with a button and a menu with items:
 
 ```lua
-local player = game.Players.LocalPlayer
+local Icon = require(game.Workspace["ActionBar"].Icon)
+local Menu = require(game.Workspace["ActionBar"].Icon.Menu)
+local Players = game:GetService("Players")
 
--- Create an action button
-local actionButton = Icon.new(player)
-actionButton.setImage("12345678", "selected")
-actionButton.setLabel("Attack")
+Icon.Attribute = true -- Enables attribute, You can disable it if you want.
 
--- Create an action menu
-local actionMenu = menu.new(player)
-local item1 = actionMenu.newItem("Item 1")
-local item2 = actionMenu.newItem("Item 2")
-
--- Set up click events
-actionButton.MouseButton1Click(function()
-    actionMenu.show()
+Players.PlayerAdded:Connect(function(player)
+	local ResetCharacter = Icon.new(player)
+	local OpenMenu = Icon.new(player)
+	
+	local TestMenu = Menu.new(player)
+	TestMenu.hide()
+	local Reset = TestMenu.newItem("Reset Character")
+	
+	local function resetCharacter()
+		player.Character.Humanoid.Health = 0
+	end
+	
+	ResetCharacter.MouseButton1Click(resetCharacter)
+	ResetCharacter.setLabel("Reset Character")
+	
+	OpenMenu.setLabel("Open TestMenu")
+	
+	local function OpenTestMenu()
+		if OpenMenu.Selected then
+			TestMenu.xpos(UDim2.new(0, 180))
+			TestMenu.show()
+			OpenMenu.setLabel("Close TestMenu")
+		else
+			TestMenu.hide()
+			OpenMenu.setLabel("Open TestMenu")
+		end
+	end
+	
+	OpenMenu.MouseButton1Click(OpenTestMenu)
+	Reset.MouseButton1Click(resetCharacter)
 end)
-
-item1.MouseButton1Click(function()
-    print("Item 1 clicked")
+```
 end)
 ```
